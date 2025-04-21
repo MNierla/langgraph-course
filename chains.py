@@ -5,11 +5,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+from langchain_core.messages import HumanMessage
 from langchain_core.output_parsers.openai_tools import (
     JsonOutputToolsParser,
     PydanticToolsParser,
 )
-from langchain_core.messages import HumanMessage
 # On MessagePlaceholder
 # (class) MessagesPlaceholder
 # Prompt template that assumes variable is already list of messages.
@@ -19,6 +19,7 @@ from langchain_core.messages import HumanMessage
 #   from langchain_core.prompts import MessagesPlaceholder
 #       prompt = MessagesPlaceholder("history")
 #       prompt.format_messages() # raises KeyError
+
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_openai import ChatOpenAI
 

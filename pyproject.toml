@@ -16,6 +16,7 @@ langchain-openai = "*"
 langgraph = "*"
 grandalf = "*"
 ipykernel = "^7.2.0"
+langchain-tavily = "*"
 
 [build-system]
 requires = ["poetry-core"]
