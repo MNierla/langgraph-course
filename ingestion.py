@@ -37,8 +37,16 @@ doc_splits = text_splitter.split_documents(docs_list)
 # > to make it "nicer" let's check if ./.chroma exists. If not create it.
 CHROMA_PATH = "./.chroma"
 
-if not Path(CHROMA_PATH).exists():
-    print("Erstelle neuen Vectorstore...")
+vectorstore = Chroma(
+    collection_name="rag-chroma",
+    persist_directory=CHROMA_PATH,
+    embedding_function=OpenAIEmbeddings(),
+)
+
+print("Dokumente im Vectorstore:", vectorstore._collection.count())
+
+if vectorstore._collection.count() == 0:
+    print("Befülle Vectorstore...")
 
     vectorstore = Chroma.from_documents(
         documents=doc_splits,
@@ -47,16 +55,17 @@ if not Path(CHROMA_PATH).exists():
         persist_directory=CHROMA_PATH,
     )
 
-    print("Vectorstore erstellt.")
-# vectorstore = Chroma.from_documents(
-#     documents=doc_splits,
-#     collection_name="rag-chroma",
-#     embedding=OpenAIEmbeddings(),
-#     persist_directory="./.chroma",
-# )
+retriever = vectorstore.as_retriever()
 
-retriever = Chroma(
-    collection_name="rag-chroma",
-    persist_directory=CHROMA_PATH,
-    embedding_function=OpenAIEmbeddings(),
-).as_retriever()
+# test
+question = "agent memory"
+docs = retriever.invoke(question)
+
+#print(docs)
+print(len(docs))
+
+question = "pizza hut"
+docs = retriever.invoke(question)
+
+#print(docs)
+print(len(docs))
