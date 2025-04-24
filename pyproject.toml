@@ -20,10 +20,12 @@ python-dotenv = "*"
 black = "*"
 isort = "*"
 pytest = "*"
-#langchain-chroma = "*" # not supported by conda environment
+#langchain-chroma = "*" # not supported by conda environment > wrong! it is working. The issue is chroma-hnswlib
 grandalf = "*" # for mermaid drawings
 ipykernel = "^7.2.0" # for usage with vs-code
-langchain-chroma = "^1.1.0"
+langchain-chroma = "*"
+langchain-tavily = "^0.1.5"
+
 
 [build-system]
 requires = ["poetry-core"]
