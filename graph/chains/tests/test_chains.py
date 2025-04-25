@@ -2,10 +2,13 @@
 
 from dotenv import load_dotenv
 
+from pprint import pprint
+
 load_dotenv()
 
 from typing import cast
 from graph.chains.retrieval_grader import GradeDocuments, retrieval_grader
+from graph.chains.generation import generation_chain
 from ingestion import retriever
 
 
@@ -56,3 +59,12 @@ def test_retrival_grader_answer_no() -> None:
 
     assert res.binary_score == "no"
 
+def test_generation_chain() -> None:
+    question = "agent memory"
+    docs = retriever.invoke(question)
+    
+    # if correct, docs should contain k document-chunks; k = 4 by default; see ingestion.py
+    assert len(docs) == 4
+
+    generation = generation_chain.invoke({"context": docs, "question": question})
+    pprint(generation)
