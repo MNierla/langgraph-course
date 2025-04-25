@@ -25,6 +25,11 @@ def web_search(state: GraphState) -> Dict[str, Any]:
     results = tavily_results.get("results", [])
     #print("### Tavily results ###")
     #print(results)
+
+    # the following "tavily_results = ..." came from Revision "a450f9b"
+    # > it seems like the course teacher has run into the same issues regarding the new result-structure ;)
+    # tavily_results = web_search_tool.invoke({"query": question})['results']
+
     joined_tavily_result = "\n".join(
         [tavily_result["content"] for tavily_result in results]
     )
