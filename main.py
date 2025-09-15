@@ -1,10 +1,12 @@
-from typing import List, Sequence
+from typing import TypedDict, Annotated
 
 from dotenv import load_dotenv
+
 load_dotenv()
 
 from langchain_core.messages import BaseMessage, HumanMessage
-from langgraph.graph import END, MessageGraph
+
+# from langgraph.graph import END, MessageGraph
 # On MessageGraph:
 # A StateGraph where every node receives a list of messages as input and returns one or more messages as output.
 # MessageGraph is a subclass of StateGraph whose entire state is a single, append-only* list of messages. 
@@ -13,7 +15,13 @@ from langgraph.graph import END, MessageGraph
 
 # here we import the chains from the previous lesson
 # > as we don't call chains.py directly any longer, we can comment out the dotenv-import there
+from langgraph.graph import END, StateGraph
+from langgraph.graph.message import add_messages
 from chains import generate_chain, reflect_chain
+
+
+class MessageGraph(TypedDict):
+    messages: Annotated[list[BaseMessage], add_messages]
 
 
 REFLECT = "reflect"
@@ -22,25 +30,24 @@ GENERATE = "generate"
 # We need to have a conversation between AI and human 
 # Generation node will be the AI part so we can just evoke this chain.
 # Responses from generate will be AI messages (I guess).
-def generation_node(state: Sequence[BaseMessage]):
-    return generate_chain.invoke({"messages": state})
+def generation_node(state: MessageGraph):
+    return {"messages": [generate_chain.invoke({"messages": state["messages"]})]}
 
 # Reflection node mimics the human in this scenario
 # Here we have to extract the answer and add it as a HumanMessage manually.
-def reflection_node(messages: Sequence[BaseMessage]) -> List[BaseMessage]:
-    res = reflect_chain.invoke({"messages": messages})
-    return [HumanMessage(content=res.content)]
+def reflection_node(state: MessageGraph):
+    res = reflect_chain.invoke({"messages": state["messages"]})
+    return {"messages": [HumanMessage(content=res.content)]}
 
-
-builder = MessageGraph()
+builder = StateGraph(state_schema=MessageGraph)
 builder.add_node(GENERATE, generation_node)
 builder.add_node(REFLECT, reflection_node)
 builder.set_entry_point(GENERATE)
 
 # here we have a simple predefined criterion
 # later we can have a (separate) llm for dynamic decision making
-def should_continue(state: List[BaseMessage]):
-    if len(state) > 6:
+def should_continue(state: MessageGraph):
+    if len(state["messages"]) > 6:
         return "end"
     return "reflect"
 
@@ -58,14 +65,19 @@ graph = builder.compile()
 
 if __name__ == "__main__":
     print("Hello LangGraph")
-    inputs = HumanMessage(content="""Make this tweet better:"
+    inputs = {
+        "messages": [
+            HumanMessage(
+                content="""Make this tweet better:"
                                     @LangChainAI
             — newly Tool Calling feature is seriously underrated.
 
             After a long wait, it's  here- making the implementation of agents across different models with function calling - super easy.
 
             Made a video covering their newest blog post
-
-                                  """)
+                """
+            )
+        ]
+    }
     response = graph.invoke(inputs)
     print(response)
