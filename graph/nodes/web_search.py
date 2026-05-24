@@ -23,7 +23,8 @@ def web_search(state: GraphState) -> Dict[str, Any]:
     # Instead of a list with ["content"] we have an outer list with query, follow_up_questions, ..., and results.
     # Under results we have the desired list with ["content"]
     results = tavily_results.get("results", [])
-
+    #print("### Tavily results ###")
+    #print(results)
     joined_tavily_result = "\n".join(
         [tavily_result["content"] for tavily_result in results]
     )
@@ -33,6 +34,8 @@ def web_search(state: GraphState) -> Dict[str, Any]:
         documents.append(web_results)
     else:
         documents = [web_results]
+    #print("### Documents ###")
+    #print(documents)
     return {"documents": documents, "question": question}
 
 
