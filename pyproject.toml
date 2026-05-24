@@ -23,6 +23,7 @@ pytest = "*"
 #langchain-chroma = "*" # not supported by conda environment
 grandalf = "*" # for mermaid drawings
 ipykernel = "^7.2.0" # for usage with vs-code
+langchain-chroma = "^1.1.0"
 
 [build-system]
 requires = ["poetry-core"]
