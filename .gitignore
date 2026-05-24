@@ -102,7 +102,7 @@ venv.bak/
 .mypy_cache/
 
 # VS Code
-.vscode/
+#.vscode/ # add .vscode explicitly to backup settings.json and launch.json for pytest
 *.code-workspace
 
 # PyCharm
