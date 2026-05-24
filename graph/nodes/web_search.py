@@ -16,10 +16,19 @@ def web_search(state: GraphState) -> Dict[str, Any]:
     documents = state["documents"]
 
     tavily_results = web_search_tool.invoke({"query": question})
+    #print("--- RAW TAVILY RESULT ---")
+    #print(tavily_results)
+    #print(type(tavily_results))
+    # NOTE: Due to API changes there exists and additional layer in tavily_results now
+    # Instead of a list with ["content"] we have an outer list with query, follow_up_questions, ..., and results.
+    # Under results we have the desired list with ["content"]
+    results = tavily_results.get("results", [])
+
     joined_tavily_result = "\n".join(
-        [tavily_result["content"] for tavily_result in tavily_results]
+        [tavily_result["content"] for tavily_result in results]
     )
     web_results = Document(page_content=joined_tavily_result)
+  
     if documents is not None:
         documents.append(web_results)
     else:
@@ -28,4 +37,7 @@ def web_search(state: GraphState) -> Dict[str, Any]:
 
 
 if __name__ == "__main__":
-    web_search(state={"question": "agent memory", "documents": None})
+    # > hier sollte "documents": None durch "docuemnts":[] ersetzt werden (leere Liste)
+    # > damit lässt sich zudem die pylance-type Warnung beheben
+    # > weiterhin werden generation und web_search gesetzt
+    web_search(state={"question": "agent memory","generation": "","web_search": True,"documents": []})

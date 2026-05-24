@@ -1,4 +1,5 @@
 from typing import List, TypedDict
+from langchain.schema import Document
 
 # NOTE:
 # Compared to previous reflection/reflexion-agents we don't use MessageGraph-nodes for this project
@@ -18,4 +19,5 @@ class GraphState(TypedDict):
     generation: str
     web_search: bool
     # documents contains documents from vector-storage and/or web_search
-    documents: List[str]
+    # > changed from List[str] to List[Document]
+    documents: List[Document]
