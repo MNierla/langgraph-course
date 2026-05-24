@@ -2,7 +2,7 @@ from typing import List
 
 from pydantic import BaseModel, Field
 
-
+# setup critique
 class Reflection(BaseModel):
     missing: str = Field(description="Critique of what is missing.")
     superfluous: str = Field(description="Critique of what is superfluous")
