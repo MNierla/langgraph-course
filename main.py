@@ -13,9 +13,13 @@ from langchain_core.messages import BaseMessage, HumanMessage
 # Each node in a MessageGraph takes a list of messages as input and returns zero or more messages as output. 
 # The add_messages function is used to merge the output messages from each node into the existing list of messages in the graph's state.
 
-# here we import the chains from the previous lesson
-# > as we don't call chains.py directly any longer, we can comment out the dotenv-import there
+# Previously we used MessageGraph instead of StateGraph
+# > motivation for switching to StateGraph is the freedom to define our own node-class
+# > in MessageGraph the node-class is fixed
+# > in StateGraph we can define it as we want; in this case we want to use Annoted and add_messages as a reducer
 from langgraph.graph import END, StateGraph
+# add_messages is a reducer function
+# > adds entries to messages 
 from langgraph.graph.message import add_messages
 from chains import generate_chain, reflect_chain
 
@@ -51,9 +55,11 @@ def should_continue(state: MessageGraph):
         return "end"
     return "reflect"
 
-# content in curly brackets is important to map the strings from should_continue to actual states!
+# content in curly brackets is important to map the strings/states/whatever from should_continue to actual states!
 # to make this more clear here, I've put the strings into lowercase (original is all capital)
-builder.add_conditional_edges(GENERATE, should_continue, {"end":END, "reflect":REFLECT}) 
+# > without specification it can work if should_continue returns states directly (not the case in my version)
+# > without specification however drawing with mermaid would fail even if should_continue returns states
+builder.add_conditional_edges(GENERATE, should_continue, path_map={"end":END, "reflect":REFLECT}) 
 builder.add_edge(REFLECT, GENERATE)
 
 # compared to previous courses which used jupyter notebook, we cannot directly draw the mermaid-graph here
@@ -80,4 +86,7 @@ if __name__ == "__main__":
         ]
     }
     response = graph.invoke(inputs)
-    print(response)
+    for msg in response["messages"]:
+        print(f"{msg.type}: {msg.content}\n")
+
+    #print(response)
