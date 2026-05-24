@@ -25,7 +25,8 @@ def run_queries(search_queries: list[str], **kwargs):
     """Run the generated queries."""
     return tavily_tool.batch([{"query": query} for query in search_queries])
 
-
+# Without ToolNode setting up the execute_tools was much more complicated
+# > see tool_executor_without_ToolNode.py
 execute_tools = ToolNode(
     [
         StructuredTool.from_function(run_queries, name=AnswerQuestion.__name__),
