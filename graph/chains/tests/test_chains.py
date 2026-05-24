@@ -32,6 +32,7 @@ def test_retrival_grader_answer_yes() -> None:
 def test_retrival_grader_answer_no() -> None:
     question = "agent memory"
     docs = retriever.invoke(question)
+    # > docs[1] was selected by coincidence. could have been docs[0], docs[2] or docs[3]
     doc_txt = docs[1].page_content
     # Added explizit cast to satisfy pylance-type-checks
     # here we ask a question which we know of that it cannot be answered from the vector-database

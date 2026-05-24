@@ -1,8 +1,11 @@
-from typing import Any, Dict
+from typing import Any, Dict, cast
+# Added Document and cast to allow casting the retrieved files to documents
+from langchain_core.documents import Document
 
 from graph.chains.retrieval_grader import retrieval_grader
+# Also importe GradeDocuments just to please the pylance tool
+from graph.chains.retrieval_grader import GradeDocuments
 from graph.state import GraphState
-
 
 def grade_documents(state: GraphState) -> Dict[str, Any]:
     """
@@ -23,8 +26,10 @@ def grade_documents(state: GraphState) -> Dict[str, Any]:
     filtered_docs = []
     web_search = False
     for d in documents:
-        score = retrieval_grader.invoke(
-            {"question": question, "document": d.page_content}
+        doc = cast(Document,d)
+        score = cast(GradeDocuments,retrieval_grader.invoke(
+            {"question": question, "document": doc.page_content}
+        )
         )
         grade = score.binary_score
         if grade.lower() == "yes":
