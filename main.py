@@ -1,3 +1,4 @@
+# NOTE:
 # First Aim - Setup a C-RAG (corrective rag)
 # > extend "normal" RAG by a reflection process
 # > reflection process shall overwatch if selected chunks from the RAG-database actually are suitable
