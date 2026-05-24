@@ -4,6 +4,7 @@ version = "0.1.0"
 description = ""
 authors = ["Eden Marco <emarco177@gmail.com>"]
 readme = "README.md"
+package-mode = false # added
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
@@ -19,7 +20,9 @@ python-dotenv = "*"
 black = "*"
 isort = "*"
 pytest = "*"
-langchain-chroma = "*"
+#langchain-chroma = "*" # not supported by conda environment
+grandalf = "*" # for mermaid drawings
+ipykernel = "^7.2.0" # for usage with vs-code
 
 [build-system]
 requires = ["poetry-core"]
