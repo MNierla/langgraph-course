@@ -1,3 +1,7 @@
+# add dotenv import here to be able to test chains.py without running main.py
+from dotenv import load_dotenv
+load_dotenv()
+
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_openai import ChatOpenAI
 
@@ -8,7 +12,7 @@ reflection_prompt = ChatPromptTemplate.from_messages(
             "You are a viral twitter influencer grading a tweet. Generate critique and recommendations for the user's tweet."
             "Always provide detailed recommendations, including requests for length, virality, style, etc.",
         ),
-        MessagesPlaceholder(variable_name="messages"),
+        MessagesPlaceholder(variable_name="messages"), # placeholder for the messages that will be passed in at runtime
     ]
 )
 
@@ -25,6 +29,6 @@ generation_prompt = ChatPromptTemplate.from_messages(
 )
 
 
-llm = ChatOpenAI()
+llm = ChatOpenAI(model="gpt-4.1-nano")
 generate_chain = generation_prompt | llm
 reflect_chain = reflection_prompt | llm
