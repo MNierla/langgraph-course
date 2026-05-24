@@ -18,6 +18,7 @@ class AnswerQuestion(BaseModel):
     )
 
 
+# NOTE: ReviseAnswer is an extension of AnswerQuestion!
 class ReviseAnswer(AnswerQuestion):
     """Revise your original answer to your question."""
 
