@@ -1,19 +1,21 @@
 [tool.poetry]
-name = "langgaph-course"
+name = "reflexion-agent"
 version = "0.1.0"
 description = ""
 authors = ["Eden Marco <emarco177@gmail.com>"]
 readme = "README.md"
+package-mode = false
 
 [tool.poetry.dependencies]
-python = "^3.10"
-langchain = "^0.3.23"
-langgraph = "^0.3.31"
-langchain-openai = "^0.3.14"
-python-dotenv = "^1.1.0"
-black = "^25.1.0"
-isort = "^6.0.1"
-
+python = ">=3.10,<3.13"
+python-dotenv = "*"
+black = "*"
+isort = "*"
+langchain = "*"
+langchain-openai = "*"
+langgraph = "*"
+grandalf = "*"
+ipykernel = "^7.2.0"
 
 [build-system]
 requires = ["poetry-core"]
