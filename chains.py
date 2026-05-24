@@ -1,6 +1,7 @@
 # add dotenv import here to be able to test chains.py without running main.py
-from dotenv import load_dotenv
-load_dotenv()
+# from dotenv import load_dotenv
+# load_dotenv()
+# > no longer required as chains.py is now called from main.py
 
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_openai import ChatOpenAI
