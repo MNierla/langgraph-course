@@ -14,7 +14,7 @@ def decide_to_generate(state):
 
     if state["web_search"]:
         print(
-            "---DECISION: NOT ALL DOCUMENTS ARE NOT RELEVANT TO QUESTION, INCLUDE WEB SEARCH---"
+            "---DECISION: NOT ALL DOCUMENTS ARE RELEVANT TO QUESTION, INCLUDE WEB SEARCH---"
         )
         return WEBSEARCH
     else:
@@ -24,6 +24,8 @@ def decide_to_generate(state):
 
 workflow = StateGraph(GraphState)
 
+# add_node assigns a function (2nd argument) to a node-name (1st argument)
+# > here instead of node-name-strings, ENUM are used which are defined in consts.py
 workflow.add_node(RETRIEVE, retrieve)
 workflow.add_node(GRADE_DOCUMENTS, grade_documents)
 workflow.add_node(GENERATE, generate)

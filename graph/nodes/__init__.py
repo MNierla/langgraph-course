@@ -3,4 +3,5 @@ from graph.nodes.grade_documents import grade_documents
 from graph.nodes.retrieve import retrieve
 from graph.nodes.web_search import web_search
 
+# these lines make "generate", "grade_documents", "retrieve" and "web_search" accessible from outside
 __all__ = ["generate", "grade_documents", "retrieve", "web_search"]

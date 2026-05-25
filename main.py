@@ -9,7 +9,18 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from graph.graph import app
+from graph.state import GraphState
 
 if __name__ == "__main__":
     print("Hello Advanced RAG")
-    print(app.invoke(input={"question": "what is agent memory?"}))
+    # folgender invoke funktioniert, ist aber von der typisierung unsauber; pylance warning
+    # > print(app.invoke(input={"question": "what is agent memory?"}))
+
+    # eigener Ansatz
+    question = "what is agent memory?"
+    # so erzeugt man TypedDict-Klassen-Objekte richtig
+    inputState: GraphState = {"question":question,"generation":"","web_search":False,"documents":[]}
+    # so ist es falsch
+    # > inputState = GraphState("question":question,"generation":"","web_search":False,"documents":[])
+    print(app.invoke(input=inputState))
+    
