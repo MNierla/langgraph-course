@@ -1,5 +1,6 @@
 from typing import List, TypedDict
-from langchain.schema import Document
+from langchain_core.documents import Document
+#from langchain.schema import Document
 
 # NOTE:
 # Compared to previous reflection/reflexion-agents we don't use MessageGraph-nodes for this project

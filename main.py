@@ -1,5 +1,5 @@
-# Run in conda-environment langgraph_course
-# > conda env create -f langgraph_course.yml
+# Updated to run in conda-environment langgraph_course_studio
+# > conda env create -f langgraph_course_studio.yml
 #
 # NOTE:
 # First Step - Setup a C-RAG (corrective rag)
