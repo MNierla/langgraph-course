@@ -1,4 +1,9 @@
 from dotenv import load_dotenv
+# Muss für LangSmith Studio (Aufruf über "langgraph dev") vor answer_grader liegen, da dieser auch ein llm anlegt
+# Grund: "langgraph dev" startet hier in graph.py aufgrund der Einstellung in langgraph.json
+# Bisher liefen runs über main.py, welches mit load_dotenv beginnt. Für "langgraph dev"
+load_dotenv()
+
 from typing import cast
 from langgraph.graph import END, StateGraph
 
@@ -9,9 +14,6 @@ from graph.chains.router import question_router, RouteQuery
 from graph.consts import RETRIEVE, GRADE_DOCUMENTS, GENERATE, WEBSEARCH
 from graph.nodes import generate, grade_documents, retrieve, web_search
 from graph.state import GraphState
-
-load_dotenv()
-
 
 def decide_to_generate(state):
     print("---ASSESS GRADED DOCUMENTS---")
@@ -91,7 +93,12 @@ workflow.set_conditional_entry_point(
         RETRIEVE: RETRIEVE,
     },
 )
-workflow.set_entry_point(RETRIEVE)
+# disable second entry point!
+# it works if the conditional entry point would also go to retrieve but if the conditional entry point wants to go to websearch
+# both websearch and retrieve will run in parallel and both will write to the document-buffer
+# > result: langgraph.errors.InvalidUpdateError: At key 'documents': Can receive only one value per step. Use an Annotated key to handle multiple values.
+
+#workflow.set_entry_point(RETRIEVE)
 workflow.add_edge(RETRIEVE, GRADE_DOCUMENTS)
 workflow.add_conditional_edges(
     GRADE_DOCUMENTS,

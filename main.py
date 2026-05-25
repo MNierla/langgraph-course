@@ -36,7 +36,7 @@ if __name__ == "__main__":
     # > print(app.invoke(input={"question": "what is agent memory?"}))
 
     # eigener Ansatz
-    question = "agent memory?" #"what is agent memory?"
+    question = "What is spettekaka?" #"what is agent memory?"
     # so erzeugt man TypedDict-Klassen-Objekte richtig
     inputState: GraphState = {"question":question,"generation":"","web_search":False,"documents":[]}
     # so ist es falsch
