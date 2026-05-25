@@ -4,16 +4,27 @@ version = "0.1.0"
 description = ""
 authors = ["Eden Marco <emarco177@gmail.com>"]
 readme = "README.md"
+package-mode = false # added
 
 [tool.poetry.dependencies]
-python = "^3.10"
-langchain = "^0.3.25"
-langchain-openai = "^0.3.18"
-langchain-tavily = "^0.2.0"
-langgraph = "^0.4.7"
-python-dotenv = "^1.1.0"
-black = "^25.1.0"
-isort = "^6.0.1"
+python = ">=3.10,<3.13"
+beautifulsoup4 = "*"
+langchain-community = "*"
+tiktoken = "*"
+langchainhub = "*"
+langchain = "*"
+langgraph = "*"
+tavily-python = "*"
+langchain-openai = "*"
+python-dotenv = "*"
+black = "*"
+isort = "*"
+pytest = "*"
+#langchain-chroma = "*" # not supported by conda environment > wrong! it is working. The issue is chroma-hnswlib
+grandalf = "*" # for mermaid drawings
+ipykernel = "^7.2.0" # for usage with vs-code
+langchain-chroma = "*"
+langchain-tavily = "^0.1.5"
 
 
 [build-system]
