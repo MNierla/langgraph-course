@@ -8,8 +8,14 @@ from langchain_openai import ChatOpenAI
 class RouteQuery(BaseModel):
     """Route a user query to the most relevant datasource."""
 
+    # Literal allows to restrict the amount of possible/allowed strings
+    # (class) Literal
+    # Special typing form to define literal types (a.k.a. value types).
+    # This form can be used to indicate to type checkers that the corresponding
+    # variable or function parameter has a value equivalent to the provided
+    # literal (or one of several literals):
     datasource: Literal["vectorstore", "websearch"] = Field(
-        ...,
+        ..., # < Placeholder
         description="Given a user question choose to route it to web search or a vectorstore.",
     )
 

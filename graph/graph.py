@@ -83,6 +83,7 @@ workflow.add_node(GRADE_DOCUMENTS, grade_documents)
 workflow.add_node(GENERATE, generate)
 workflow.add_node(WEBSEARCH, web_search)
 
+# as router is right at the start of the graph and has no own node, we need set_conditional_entry_point
 workflow.set_conditional_entry_point(
     route_question,
     {

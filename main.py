@@ -7,6 +7,17 @@
 # Second Step - Self-Reflection
 # > extend C-RAG by additional checks of the generated answer 
 # > this shall avoid hallucinations and off-topic answers
+#
+# Third Step - Adaptive-RAG
+# > extend Self-Reflection-C-RAG by a router node 
+# > router decides whether the rage-storage shall be completely get bypassed in favor for a direct websearch
+
+import warnings
+# Added filter for the JsonPlusSerializer warning which stems from some internal langchain/langgraph library
+warnings.filterwarnings(
+    "ignore",
+    message="The default value of `allowed_objects` will change*",
+)
 
 from dotenv import load_dotenv
 
