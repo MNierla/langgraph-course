@@ -1,7 +1,7 @@
 # NOTE: name of this file has to start with "test_" otherwise pytest won't find/recognize it
 
 from dotenv import load_dotenv
-
+# pretty print
 from pprint import pprint
 
 load_dotenv()
@@ -62,9 +62,10 @@ def test_retrival_grader_answer_no() -> None:
 def test_generation_chain() -> None:
     question = "agent memory"
     docs = retriever.invoke(question)
-    
+
     # if correct, docs should contain k document-chunks; k = 4 by default; see ingestion.py
     assert len(docs) == 4
 
     generation = generation_chain.invoke({"context": docs, "question": question})
+    # no real criterion here; testcase is meant as sanity-check
     pprint(generation)
