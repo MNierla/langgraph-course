@@ -1,3 +1,6 @@
+# Run in conda-environment langgraph_course
+# > conda env create -f langgraph_course.yml
+#
 # NOTE:
 # First Step - Setup a C-RAG (corrective rag)
 # > extend "normal" RAG by a reflection process
