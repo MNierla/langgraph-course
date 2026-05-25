@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 
-from langchain_core.messages import HumanMessage
+from langchain_core.messages import HumanMessage, AIMessage
 from langgraph.graph import MessagesState, StateGraph,END
 
 from nodes import run_agent_reasoning, tool_node
@@ -11,10 +11,19 @@ AGENT_REASON="agent_reason"
 ACT= "act"
 LAST = -1
 
-
 def should_continue(state: MessagesState) -> str:
-    if not state["messages"][LAST].tool_calls:
+    # only AIMessages can have tool_calls
+    # > we might know that should continue always gets an AIMessage as input but this is not clear to the model 
+    # > thus, we get pylance-warnings
+    #if not state["messages"][LAST].tool_calls:
+    #    return END
+    last_message = state["messages"][LAST]
+    if not isinstance(last_message, AIMessage):
         return END
+
+    if not last_message.tool_calls:
+        return END
+
     return ACT
 
 flow = StateGraph(MessagesState)
