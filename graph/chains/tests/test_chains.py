@@ -12,11 +12,10 @@ from graph.chains.generation import generation_chain
 from ingestion import retriever
 from graph.chains.hallucination_grader import hallucination_grader, GradeHallucinations
 
-
+# test_retrival tests fetched documents against the initial question
 def test_retrival_grader_answer_yes() -> None:
     question = "agent memory"
     docs = retriever.invoke(question)
-
     # if correct, docs should contain k document-chunks; k = 4 by default; see ingestion.py
     assert len(docs) == 4
     #print(docs)
@@ -39,10 +38,8 @@ def test_retrival_grader_answer_yes() -> None:
 def test_retrival_grader_answer_no() -> None:
     question = "agent memory"
     docs = retriever.invoke(question)
-
     # if correct, docs should contain k document-chunks; k = 4 by default; see ingestion.py
     assert len(docs) == 4
-
     # > docs[1] was selected by coincidence. could have been docs[0], docs[2] or docs[3]
     doc_txt = docs[1].page_content
     # Added explizit cast to satisfy pylance-type-checks
@@ -50,7 +47,7 @@ def test_retrival_grader_answer_no() -> None:
     res = cast(
     GradeDocuments,
     retrieval_grader.invoke(
-         {"question": "how to make pizaa", "document": doc_txt}
+        {"question": "how to make pizaa", "document": doc_txt}
     )
     )
 
@@ -63,7 +60,6 @@ def test_retrival_grader_answer_no() -> None:
 def test_generation_chain() -> None:
     question = "agent memory"
     docs = retriever.invoke(question)
-
     # if correct, docs should contain k document-chunks; k = 4 by default; see ingestion.py
     assert len(docs) == 4
 
@@ -72,26 +68,30 @@ def test_generation_chain() -> None:
     # no real criterion here; testcase is meant as sanity-check
     pprint(generation)
 
+# test_hallucination tests the generated answert against the fetched documents
 def test_hallucination_grader_answer_yes() -> None:
     question = "agent memory"
     docs = retriever.invoke(question)
+    # if correct, docs should contain k document-chunks; k = 4 by default; see ingestion.py
+    assert len(docs) == 4
 
     generation = generation_chain.invoke({"context": docs, "question": question})
-    res: GradeHallucinations = hallucination_grader.invoke(
-        {"documents": docs, "generation": generation}
-    )
+    # changed to explizit cast like for GradeDocuments
+    res = cast(GradeHallucinations,hallucination_grader.invoke({"documents": docs, "generation": generation}))
     assert res.binary_score
 
 
 def test_hallucination_grader_answer_no() -> None:
     question = "agent memory"
     docs = retriever.invoke(question)
+    # if correct, docs should contain k document-chunks; k = 4 by default; see ingestion.py
+    assert len(docs) == 4
 
-    res: GradeHallucinations = hallucination_grader.invoke(
+    res = cast(GradeHallucinations,hallucination_grader.invoke(
         {
             "documents": docs,
             "generation": "In order to make pizza we need to first start with the dough",
         }
-    )
+    ))
     assert not res.binary_score
 

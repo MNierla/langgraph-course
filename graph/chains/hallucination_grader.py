@@ -1,6 +1,6 @@
 from langchain_core.prompts import ChatPromptTemplate
 from pydantic import BaseModel, Field
-from langchain_core.runnables import RunnableSequence
+#from langchain_core.runnables import RunnableSequence
 from langchain_openai import ChatOpenAI
 
 llm = ChatOpenAI(temperature=0)
@@ -25,4 +25,8 @@ hallucination_prompt = ChatPromptTemplate.from_messages(
     ]
 )
 
-hallucination_grader: RunnableSequence = hallucination_prompt | structured_llm_grader
+# Why is it defined as RunnableSequence?
+# > Compare retrieval_grader: retrieval_grader = grade_prompt | structured_llm_grader
+# Using RunnableSequence here gives typing warnings from pylance
+# > hallucination_grader: RunnableSequence = hallucination_prompt | structured_llm_grader
+hallucination_grader = hallucination_prompt | structured_llm_grader

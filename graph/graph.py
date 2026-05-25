@@ -1,9 +1,9 @@
 from dotenv import load_dotenv
-
+from typing import cast
 from langgraph.graph import END, StateGraph
 
 from graph.chains.answer_grader import answer_grader
-from graph.chains.hallucination_grader import hallucination_grader
+from graph.chains.hallucination_grader import hallucination_grader,GradeHallucinations
 from graph.consts import RETRIEVE, GRADE_DOCUMENTS, GENERATE, WEBSEARCH
 from graph.nodes import generate, grade_documents, retrieve, web_search
 from graph.state import GraphState
@@ -30,9 +30,16 @@ def grade_generation_grounded_in_documents_and_question(state: GraphState) -> st
     documents = state["documents"]
     generation = state["generation"]
 
-    score = hallucination_grader.invoke(
+    # Added explizit cast to satisfy pylance
+    score = cast(GradeHallucinations,hallucination_grader.invoke(
         {"documents": documents, "generation": generation}
-    )
+    ))
+
+    # := > walrus operator
+    # hallucination_grade := score.binary_score is equal to
+    #
+    #   hallucination_grade = score.binary_score
+    #   if hallucination_grade:
 
     if hallucination_grade := score.binary_score:
         print("---DECISION: GENERATION IS GROUNDED IN DOCUMENTS---")
