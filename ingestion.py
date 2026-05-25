@@ -57,15 +57,15 @@ if vectorstore._collection.count() == 0:
 
 retriever = vectorstore.as_retriever()
 
-# test
-question = "agent memory"
-docs = retriever.invoke(question)
-
+# test -> add it to testcases!
+#question = "agent memory"
+#docs = retriever.invoke(question)
+#
 #print(docs)
-print(len(docs))
-
-question = "pizza hut"
-docs = retriever.invoke(question)
-
+#print(len(docs))
+#
+#question = "pizza hut"
+#docs = retriever.invoke(question)
+#
 #print(docs)
-print(len(docs))
+#print(len(docs))

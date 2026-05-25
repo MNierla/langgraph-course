@@ -12,6 +12,9 @@ from ingestion import retriever
 def test_retrival_grader_answer_yes() -> None:
     question = "agent memory"
     docs = retriever.invoke(question)
+
+    # if correct, docs should contain k document-chunks; k = 4 by default; see ingestion.py
+    assert len(docs) == 4
     #print(docs)
     doc_txt = docs[1].page_content
 
@@ -32,6 +35,10 @@ def test_retrival_grader_answer_yes() -> None:
 def test_retrival_grader_answer_no() -> None:
     question = "agent memory"
     docs = retriever.invoke(question)
+
+    # if correct, docs should contain k document-chunks; k = 4 by default; see ingestion.py
+    assert len(docs) == 4
+
     # > docs[1] was selected by coincidence. could have been docs[0], docs[2] or docs[3]
     doc_txt = docs[1].page_content
     # Added explizit cast to satisfy pylance-type-checks
