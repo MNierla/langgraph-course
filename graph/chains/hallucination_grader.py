@@ -13,11 +13,13 @@ class GradeHallucinations(BaseModel):
         description="Answer is grounded in the facts, 'yes' or 'no'"
     )
 
-
-structured_llm_grader = llm.with_structured_output(GradeHallucinations)
+# method="function_calling" added to disable the Warning:
+# UserWarning: Cannot use method='json_schema' with model gpt-3.5-turbo since it doesn't support OpenAI's Structured Output API. You can see supported models here: https://platform.openai.com/docs/guides/structured-outputs#supported-models. 
+# To fix this warning, set `method='function_calling'. Overriding to method='function_calling'.
+structured_llm_grader = llm.with_structured_output(GradeHallucinations,method="function_calling")
 
 system = """You are a grader assessing whether an LLM generation is grounded in / supported by a set of retrieved facts. \n 
-     Give a binary score 'yes' or 'no'. 'Yes' means that the answer is grounded in / supported by the set of facts."""
+    Give a binary score 'yes' or 'no'. 'Yes' means that the answer is grounded in / supported by the set of facts."""
 hallucination_prompt = ChatPromptTemplate.from_messages(
     [
         ("system", system),

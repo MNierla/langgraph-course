@@ -15,8 +15,10 @@ class GradeDocuments(BaseModel):
         description="Documents are relevant to the question, 'yes' or 'no'"
     )
 
-
-structured_llm_grader = llm.with_structured_output(GradeDocuments)
+# method="function_calling" added to disable the Warning:
+# UserWarning: Cannot use method='json_schema' with model gpt-3.5-turbo since it doesn't support OpenAI's Structured Output API. You can see supported models here: https://platform.openai.com/docs/guides/structured-outputs#supported-models. 
+# To fix this warning, set `method='function_calling'. Overriding to method='function_calling'.
+structured_llm_grader = llm.with_structured_output(GradeDocuments,method="function_calling")
 
 system = """You are a grader assessing relevance of a retrieved document to a user question. \n 
     If the document contains keyword(s) or semantic meaning related to the question, grade it as relevant. \n

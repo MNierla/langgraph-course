@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 from typing import cast
 from langgraph.graph import END, StateGraph
 
-from graph.chains.answer_grader import answer_grader
+from graph.chains.answer_grader import answer_grader,GradeAnswer
 from graph.chains.hallucination_grader import hallucination_grader,GradeHallucinations
 from graph.consts import RETRIEVE, GRADE_DOCUMENTS, GENERATE, WEBSEARCH
 from graph.nodes import generate, grade_documents, retrieve, web_search
@@ -44,7 +44,7 @@ def grade_generation_grounded_in_documents_and_question(state: GraphState) -> st
     if hallucination_grade := score.binary_score:
         print("---DECISION: GENERATION IS GROUNDED IN DOCUMENTS---")
         print("---GRADE GENERATION vs QUESTION---")
-        score = answer_grader.invoke({"question": question, "generation": generation})
+        score = cast(GradeAnswer,answer_grader.invoke({"question": question, "generation": generation}))
         if answer_grade := score.binary_score:
             print("---DECISION: GENERATION ADDRESSES QUESTION---")
             return "useful"
@@ -74,6 +74,7 @@ workflow.add_conditional_edges(
         WEBSEARCH: WEBSEARCH,
         GENERATE: GENERATE,
     },
+    # WEBSEARCH resp. the string behind it, will not be written to graph-edges
 )
 
 workflow.add_conditional_edges(
@@ -84,6 +85,7 @@ workflow.add_conditional_edges(
         "useful": END,
         "not useful": WEBSEARCH,
     },
+    # the string names like "useful" get written to the graph-edges
 )
 workflow.add_edge(WEBSEARCH, GENERATE)
 workflow.add_edge(GENERATE, END)

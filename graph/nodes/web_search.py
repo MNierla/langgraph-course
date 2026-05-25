@@ -34,7 +34,7 @@ def web_search(state: GraphState) -> Dict[str, Any]:
         [tavily_result["content"] for tavily_result in results]
     )
     web_results = Document(page_content=joined_tavily_result)
-  
+
     if documents is not None:
         documents.append(web_results)
     else:

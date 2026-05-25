@@ -79,8 +79,7 @@ def test_hallucination_grader_answer_yes() -> None:
     # changed to explizit cast like for GradeDocuments
     res = cast(GradeHallucinations,hallucination_grader.invoke({"documents": docs, "generation": generation}))
     assert res.binary_score
-
-
+    
 def test_hallucination_grader_answer_no() -> None:
     question = "agent memory"
     docs = retriever.invoke(question)
