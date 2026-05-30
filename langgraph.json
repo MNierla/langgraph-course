@@ -2,6 +2,7 @@
   "graphs": {
     "my_agent": "./graph/graph.py:app"
   },
+  "env": ".env", 
   "dependencies": [
     "."
   ]

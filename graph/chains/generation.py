@@ -31,4 +31,12 @@ Answer:""",
     ]
 )
 
-generation_chain = prompt | llm | StrOutputParser()
+additional_prompt_template = ChatPromptTemplate.from_template(
+    template = "Take {text} and rephrase it like Yoda from StarWars."
+)
+
+# Extension of generation chain
+# > get "normal" result first via the RAG-prompt
+# > then transform the result using another call to the llm with the additoinal_prompt_template
+generation_chain = prompt | llm | StrOutputParser() | additional_prompt_template | llm | StrOutputParser()
+
